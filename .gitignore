@@ -1,0 +1,16 @@
+!__init__.py
+*.sqlite3
+**/__pycache__
+!.empty
+*.log
+*.pot
+*.pyc
+*.zip
+*.jpg
+*.jpeg
+*.gif
+*.png
+*.db
+# Ignore IDE specific files
+.idea/
+.vscode/
