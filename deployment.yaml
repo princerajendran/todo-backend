@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-backend
-        image: your-dockerhub-username/todo-backend:1.0
+        image: princerajendran/todo-backend:1.0
         ports:
         - containerPort: 8080
         env:
@@ -23,3 +23,28 @@ spec:
             secretKeyRef:
               name: todo-secrets
               key: DATABASE_URL
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: todo-secrets
+              key: SECRET_KEY
+        - name: JWT_ALGORITHM
+          valueFrom:
+            secretKeyRef:
+              name: todo-secrets
+              key: JWT_ALGORITHM
+        - name: CORS_ALLOWED_ORIGINS
+          valueFrom:
+            secretKeyRef:
+              name: todo-secrets
+              key: CORS_ALLOWED_ORIGINS
+        - name: APP_PORT
+          valueFrom:
+            secretKeyRef:
+              name: todo-secrets
+              key: APP_PORT
+        - name: DEBUG
+          valueFrom:
+            secretKeyRef:
+              name: todo-secrets
+              key: DEBUG

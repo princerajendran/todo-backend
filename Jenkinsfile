@@ -1,19 +1,32 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_IMAGE = 'princerajendran/todo-backend'
+        KUBE_CONFIG = '~/.kube/config'
+    }
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker build -t princerajendran/todo-backend:${BUILD_NUMBER} .'
+                script {
+                    sh 'docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .'
+                }
             }
         }
-        stage('Push') {
+        stage('Push Docker Image') {
             steps {
-                sh 'docker push princerajendran/todo-backend:${BUILD_NUMBER}'
+                script {
+                    sh 'docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}'
+                }
             }
         }
-        stage('Deploy') {
+        stage('Deploy with Terraform') {
             steps {
-                sh 'kubectl set image deployment/todo-backend todo-backend=princerajendran/todo-backend:${BUILD_NUMBER}'
+                script {
+                    sh '''
+                    terraform init
+                    terraform apply -auto-approve -var="docker_image=${DOCKER_IMAGE}:${BUILD_NUMBER}"
+                    '''
+                }
             }
         }
     }
